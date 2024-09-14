@@ -32,10 +32,22 @@ echo " <><><><><><><><><><><><><><><><><><><><><><><><><>"
 echo "  \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/"
 echo -e "${RESET}"
 
+# Run all bootstrap scripts
+echo -e "${BLUE}Running bootstrap scripts...${RESET}"
+for bootstrap_script in ./src/bootstrap/*.sh; do
+    if [ -f "$bootstrap_script" ] && [ -x "$bootstrap_script" ]; then
+        echo -e "${CYAN}Executing $bootstrap_script${RESET}"
+        bash "$bootstrap_script"
+    else
+        echo -e "${YELLOW}Skipping $bootstrap_script (not executable or not a file)${RESET}"
+    fi
+done
+echo -e "${GREEN}Bootstrap scripts completed${RESET}"
 echo -e "${GREEN}Initializing dotfiles...${RESET}"
 # Function to concatenate files
 concatenate_files() {
     local shell_rc="$1"
+    local file_updated=false
     
     if [ -s "$shell_rc" ]; then
         echo -e "${YELLOW}The file $shell_rc already contains content.${RESET}"
@@ -44,6 +56,7 @@ concatenate_files() {
             echo -e "${RED}Skipping $shell_rc${RESET}"
             return
         fi
+        file_updated=true
     fi
     
     echo "# Star Guard's dotfiles" > "$shell_rc"
@@ -57,6 +70,17 @@ concatenate_files() {
         fi
     done
     echo -e "${CYAN}Concatenated files into $shell_rc${RESET}"
+    file_updated=true
+
+    if [ "$file_updated" = true ]; then
+        read -p "Do you want to reload the updated $shell_rc? (y/n): " reload
+        if [[ $reload == [Yy]* ]]; then
+            echo -e "${GREEN}Reloading $shell_rc${RESET}"
+            source "$shell_rc"
+        else
+            echo -e "${YELLOW}Skipping reload of $shell_rc${RESET}"
+        fi
+    fi
 }
 
 # Detect and update Bash configuration
@@ -100,7 +124,8 @@ echo -e "${MAGENTA}Applying settings...${RESET}"
 sleep 1
 echo -e "${BLUE}Star Guard's dotfiles are ready!${RESET}"
 
-# Additional tribal art
+
+
 echo -e "${MAGENTA}"
 echo "    /\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\"
 echo "   //\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\"
