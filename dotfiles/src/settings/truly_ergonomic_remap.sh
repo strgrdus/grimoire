@@ -5,7 +5,6 @@ echo "Script started at $(date)"
 
 set -euo pipefail
 
-KEYBOARD_NAME="TrulyErgonomic.com Truly Ergonomic CLEAVE Keyboard"
 AUTOSTART_FILE="$HOME/.config/autostart/remap-truly-ergonomic.desktop"
 
 # Function to create or update remap script
@@ -20,16 +19,27 @@ set -x
 echo 'Listing all input devices:'
 xinput list
 
-KEYBOARD_ID=\$(xinput list | grep -i 'TrulyErgonomic' | grep -oP 'id=\K\d+')
+# Look for the Truly Ergonomic CLEAVE Keyboard
+KEYBOARD_ID=\$(xinput list | grep -i 'TrulyErgonomic.com Truly Ergonomic CLEAVE Keyboard' | grep -v 'Mouse' | grep -v 'Consumer Control' | grep -v 'System Control' | grep -oP 'id=\K\d+' | head -n 1)
+
+echo \"Debug: KEYBOARD_ID=\$KEYBOARD_ID\"
 
 if [ -n \"\$KEYBOARD_ID\" ]; then
     echo \"Found Truly Ergonomic keyboard with ID: \$KEYBOARD_ID\"
-    setxkbmap -device \$KEYBOARD_ID -option caps:end,super:escape
+    setxkbmap -device \$KEYBOARD_ID -option super_l:escape,end:super_l
     echo \"Key remapping applied for Truly Ergonomic keyboard\"
 else
     echo \"Truly Ergonomic keyboard not found. Available devices:\"
     xinput list
-    echo \"Skipping remapping.\"
+    echo \"Attempting to find alternative keyboard...\"
+    KEYBOARD_ID=\$(xinput list | grep -i 'keyboard' | grep -v 'Virtual' | grep -v 'Consumer Control' | grep -v 'System Control' | grep -oP 'id=\K\d+' | head -n 1)
+    if [ -n \"\$KEYBOARD_ID\" ]; then
+        echo \"Found alternative keyboard with ID: \$KEYBOARD_ID\"
+        setxkbmap -device \$KEYBOARD_ID -option super_l:escape,end:super_l
+        echo \"Key remapping applied for alternative keyboard\"
+    else
+        echo \"No suitable keyboard found. Skipping remapping.\"
+    fi
 fi
 "
     echo "$content" > "$REMAP_SCRIPT"
