@@ -1,0 +1,17 @@
+xrandr --auto
+    reset displays if they get stuck in mirro"r
+
+
+wifi
+
+sudo systemctl restart NetworkManager
+    Restart network manager
+ifconfig
+    see the device?
+dmesg
+    look for issues if you are 
+sudo iwlist wlan1 scan
+    scan for network
+sudo iwconfig wlan1 essid "CoxWiFi"
+    connect to network
+
