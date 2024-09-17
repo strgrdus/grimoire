@@ -1,17 +1,25 @@
 #!/bin/bash
 
-# Function to enable natural scrolling for all touchpad devices
+# Function to enable natural scrolling for touchpads and reverse scrolling for mice
 enable_natural_scrolling() {
-    echo "Enabling natural scrolling..."
-    for id in $(xinput list | grep -i touchpad | grep -o 'id=[0-9]*' | cut -d= -f2); do
-        echo "Setting natural scrolling for device $id"
-        xinput set-prop "$id" "libinput Natural Scrolling Enabled" 1
-        echo "Current setting for device $id:"
-        xinput list-props "$id" | grep "Natural Scrolling Enabled"
+    echo "Configuring scrolling..."
+    for id in $(xinput list | grep -E 'touchpad|mouse' | grep -o 'id=[0-9]*' | cut -d= -f2); do
+        device_name=$(xinput list --name-only $id)
+        echo "Configuring device: $device_name (ID: $id)"
+        
+        if echo "$device_name" | grep -qi "touchpad"; then
+            xinput set-prop "$id" "libinput Natural Scrolling Enabled" 1
+            echo "Enabled natural scrolling for touchpad: $device_name"
+        elif echo "$device_name" | grep -qi "mouse"; then
+            xinput set-button-map "$id" 1 2 3 5 4 6 7 8 9 10 11 12
+            echo "Reversed scroll wheel for mouse: $device_name"
+        fi
+        
+        echo "---"
     done
 }
 
-# Enable natural scrolling immediately
+# Apply settings immediately
 enable_natural_scrolling
 
 # Make changes persistent
@@ -29,6 +37,6 @@ Hidden=false
 X-GNOME-Autostart-enabled=true
 EOF
 
-echo "Natural scrolling has been enabled and set to start automatically."
+echo "Scrolling configuration has been set and will start automatically."
 echo "Autostart file contents:"
 cat "$autostart_file"

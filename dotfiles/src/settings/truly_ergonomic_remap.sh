@@ -1,35 +1,37 @@
 #!/bin/bash
 
-exec > >(tee -a "/tmp/remap-laptop-keyboard.log") 2>&1
+exec > >(tee -a "/tmp/remap-truly-ergonomic.log") 2>&1
 echo "Script started at $(date)"
 
 set -euo pipefail
 
-KEYBOARD_NAME="AT Translated Set 2 keyboard"
-AUTOSTART_FILE="$HOME/.config/autostart/remap-laptop-keyboard.desktop"
+KEYBOARD_NAME="TrulyErgonomic.com Truly Ergonomic CLEAVE Keyboard"
+AUTOSTART_FILE="$HOME/.config/autostart/remap-truly-ergonomic.desktop"
 
 # Function to create or update remap script
 update_remap_script() {
-    local REMAP_SCRIPT="$HOME/.local/bin/remap-laptop-keyboard.sh"
+    local REMAP_SCRIPT="$HOME/.local/bin/remap-truly-ergonomic.sh"
     mkdir -p "$(dirname "$REMAP_SCRIPT")"
     
     local content="#!/bin/bash
 
 set -x
 
-# Get the id of the keyboard
-KEYBOARD_ID=\$(xinput list --id-only \"$KEYBOARD_NAME\")
+echo 'Listing all input devices:'
+xinput list
+
+KEYBOARD_ID=\$(xinput list | grep -i 'TrulyErgonomic' | grep -oP 'id=\K\d+')
 
 if [ -n \"\$KEYBOARD_ID\" ]; then
-    # Remap Caps Lock to Escape for the specific keyboard
-    setxkbmap -device \$KEYBOARD_ID -option caps:escape
-
-    echo \"Caps Lock remapped to Escape for $KEYBOARD_NAME (ID: \$KEYBOARD_ID)\"
+    echo \"Found Truly Ergonomic keyboard with ID: \$KEYBOARD_ID\"
+    setxkbmap -device \$KEYBOARD_ID -option caps:end,super:escape
+    echo \"Key remapping applied for Truly Ergonomic keyboard\"
 else
-    echo \"Keyboard '$KEYBOARD_NAME' not found\"
+    echo \"Truly Ergonomic keyboard not found. Available devices:\"
+    xinput list
+    echo \"Skipping remapping.\"
 fi
 "
-
     echo "$content" > "$REMAP_SCRIPT"
     chmod +x "$REMAP_SCRIPT"
     echo "Updated $REMAP_SCRIPT"
@@ -43,8 +45,8 @@ fi
 update_autostart() {
     local content="[Desktop Entry]
 Type=Application
-Name=Remap Laptop Keyboard Caps Lock to Escape
-Exec=$HOME/.local/bin/remap-laptop-keyboard.sh
+Name=Remap Truly Ergonomic Keyboard
+Exec=$HOME/.local/bin/remap-truly-ergonomic.sh
 StartupNotify=false
 Terminal=false"
 
@@ -63,5 +65,4 @@ Terminal=false"
 update_remap_script
 update_autostart
 
-echo "Caps Lock to Escape remapping configuration is complete for $KEYBOARD_NAME"
-
+echo "Key remapping configuration is complete"
