@@ -51,3 +51,17 @@ if ! command -v udevmon &> /dev/null; then
 else
     echo "udevmon is already installed."
 fi
+
+if ! command -v direnv &> /dev/null; then
+    echo "Installing direnv..."
+    curl -sfL https://direnv.net/install.sh | bash
+    if [ $? -eq 0 ]; then
+        echo "direnv installed successfully."
+    else
+        echo "Error: Failed to install direnv. Please check your internet connection and try again."
+        exit 1
+    fi
+else
+    echo "direnv is already installed."
+fi
+
