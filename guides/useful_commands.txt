@@ -22,5 +22,7 @@ xinput list
 xinput test 19
     test a keyboard to make sure you're customizing the right one
 
+pbcopy alt
+    xclip -selection clipboard
 
 
