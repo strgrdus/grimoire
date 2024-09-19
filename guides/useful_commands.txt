@@ -15,3 +15,12 @@ sudo iwlist wlan1 scan
 sudo iwconfig wlan1 essid "CoxWiFi"
     connect to network
 
+
+Customizing keyboards
+
+xinput list
+xinput test 19
+    test a keyboard to make sure you're customizing the right one
+
+
+

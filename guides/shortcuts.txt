@@ -1,0 +1,19 @@
+kali
+
+
+moving to different desktops
+    ctrl + alt + arrow keys
+send application to different desktops
+    ctrl + alt + shift + arrow keys
+
+
+
+
+
+
+
+
+
+
+
+

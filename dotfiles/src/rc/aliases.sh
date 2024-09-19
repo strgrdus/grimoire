@@ -1,2 +1,2 @@
 alias gs="git status"
-alias cu='nohup ~/apps/cursor-0.40.4x86_64.AppImage "${@:-.}" > /dev/null 2>&1 &'
+alias cu='nohup "$(ls -t ~/apps/cursor-*.AppImage | head -n1)" "${@:-.}" > /dev/null 2>&1 &'
