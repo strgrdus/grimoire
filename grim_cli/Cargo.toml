@@ -2,6 +2,12 @@
 name = "grim_cli"
 version = "0.1.0"
 edition = "2021"
+description = "A well-structured CLI app for managing and organizing boxes of information"
 
 [dependencies]
 clap = "4.5.17"
+chrono = "0.4"
+
+[[bin]]
+name = "grim"
+path = "src/main.rs"
