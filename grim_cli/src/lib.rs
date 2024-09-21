@@ -1,4 +1,5 @@
 pub mod commands;
+pub mod constants;
 
 use clap::{Command, ArgMatches};
 
