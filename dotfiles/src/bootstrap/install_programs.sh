@@ -65,3 +65,33 @@ else
     echo "direnv is already installed."
 fi
 
+# Install Rust if not already installed
+if ! command -v rustc &> /dev/null; then
+    echo "Installing Rust..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    if [ $? -eq 0 ]; then
+        echo "Rust installed successfully."
+        # Add Rust to the PATH for the current session
+        export PATH="$HOME/.cargo/bin:$PATH"
+        source "$HOME/.cargo/env"
+    else
+        echo "Error: Failed to install Rust. Please check your internet connection and try again."
+        exit 1
+    fi
+else
+    echo "Rust is already installed."
+fi
+
+# Ensure Cargo is available
+if ! command -v cargo &> /dev/null; then
+    echo "Cargo not found. Attempting to set up Rust environment..."
+    export PATH="$HOME/.cargo/bin:$PATH"
+    source "$HOME/.cargo/env"
+    if ! command -v cargo &> /dev/null; then
+        echo "Error: Cargo still not available. Please restart your shell or run 'source $HOME/.cargo/env' manually."
+        exit 1
+    fi
+fi
+
+echo "Rust and Cargo are now available."
+

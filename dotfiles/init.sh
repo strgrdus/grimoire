@@ -64,6 +64,7 @@ concatenate_files() {
     echo "# Make changes in the individual files in ./src/rc/ instead." >> "$shell_rc"
     for file in ./src/rc/*; do
         if [ -f "$file" ]; then
+            echo -e "${CYAN}Concatenating $file into $shell_rc${RESET}"
             echo "" >> "$shell_rc"
             echo "## Contents of $file" >> "$shell_rc"
             cat "$file" >> "$shell_rc"
