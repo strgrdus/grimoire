@@ -105,6 +105,15 @@ if [ -z "$BASH_VERSION" ] && [ -z "$ZSH_VERSION" ] && [ ! -f "$HOME/.zshrc" ]; t
     echo -e "${RED}Neither Bash nor Zsh detected. Please run this script in Bash or Zsh.${RESET}"
 fi
 
+# Set up Vim configuration
+echo -e "${BLUE}Setting up Vim configuration...${RESET}"
+if [ -f "$HOME/.vimrc" ]; then
+    echo -e "${YELLOW}Existing .vimrc found. Removing it...${RESET}"
+    rm "$HOME/.vimrc"
+fi
+ln -s "$(pwd)/src/rc/vimrc" "$HOME/.vimrc"
+echo -e "${GREEN}Vim configuration set up successfully${RESET}"
+
 echo -e "${YELLOW}Loading configurations...${RESET}"
 # Run all scripts in src/settings directory
 if [ -d "./src/settings" ]; then
@@ -125,10 +134,7 @@ echo -e "${MAGENTA}Applying settings...${RESET}"
 sleep 1
 echo -e "${BLUE}Star Guard's dotfiles are ready!${RESET}"
 
-
-
 echo -e "${MAGENTA}"
 echo "    /\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\"
 echo "   //\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\\\//\\\\"
 echo -e "${RESET}"
-

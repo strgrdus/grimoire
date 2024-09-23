@@ -1,0 +1,85 @@
+" Basic Vim configuration
+
+" Enable syntax highlighting
+syntax on
+
+" Show line numbers
+set number
+
+" Enable mouse support
+set mouse=a
+
+" Set tab width to 4 spaces
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+" Enable auto-indentation
+set autoindent
+
+" Highlight search results
+set hlsearch
+
+" Enable incremental search
+set incsearch
+
+" Show matching brackets
+set showmatch
+
+" Enable file type detection
+filetype plugin indent on
+
+" Set color scheme to red on black (cyberpunk-inspired)
+set background=dark
+highlight Normal ctermbg=Black ctermfg=Red guibg=#000000 guifg=#FF3366
+highlight LineNr ctermbg=Black ctermfg=DarkRed guibg=#000000 guifg=#990000
+highlight Cursor ctermbg=Red ctermfg=Black guibg=#FF3366 guifg=#000000
+highlight Comment ctermfg=DarkCyan guifg=#00FFFF
+highlight Constant ctermfg=Magenta guifg=#FF00FF
+highlight String ctermfg=Green guifg=#33FF33
+highlight Identifier ctermfg=Cyan guifg=#00FFFF
+highlight Function ctermfg=Yellow guifg=#FFFF00
+highlight Statement ctermfg=Blue guifg=#3366FF
+highlight PreProc ctermfg=DarkMagenta guifg=#CC00CC
+highlight Type ctermfg=Green guifg=#33FF33
+highlight Special ctermfg=DarkYellow guifg=#FFCC00
+highlight Error ctermbg=Red ctermfg=White guibg=#FF0000 guifg=#FFFFFF
+
+" Enable status line
+set laststatus=2
+
+" Show cursor position
+set ruler
+
+" Enable wildmenu for command-line completion
+set wildmenu
+
+" Ignore case when searching
+set ignorecase
+set smartcase
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+" Remap jj to Escape in insert mode
+inoremap jj <Esc>
+
+" Set leader key to space
+let mapleader = " "
+
+" Quick save
+nnoremap <leader>w :w<CR>
+
+" Quick quit
+nnoremap <leader>q :q<CR>
+
+" Split navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Enable persistent undo
+set undofile
+set undodir=~/.vim/undodir
